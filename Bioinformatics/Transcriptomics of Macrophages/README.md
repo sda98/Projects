@@ -26,17 +26,18 @@ This file contains the per-sample annotations required to run the DESeq2 design 
 
 ## Repo structure
 
-├── scripts/
-│ ├── 01_load_data_create_dds.R
-│ ├── 02_pca_analysis.R
-│ ├── 03_normalized_counts_table.R
-│ ├── 04_differential_expression_deseq2.R
-│ ├── 05_volcano_plot.R
-│ ├── 06_go_enrichment_gprofiler.R
-│ └── 07_pathway_enrichment_gprofiler.R
-├── GSE162698_metadata.csv
-└── GSE162698_raw_counts_GRCh38.p13_NCBI.tsv # (or place in /data and update paths)
-
+repo/
+├── data/
+│   ├── GSE162698_raw_counts_GRCh38.p13_NCBI.tsv
+│   └── GSE162698_metadata.csv
+└── scripts/
+    ├── 01_load_data_create_dds.R
+    ├── 02_pca_analysis.R
+    ├── 03_normalized_counts_table.R
+    ├── 04_differential_expression_deseq2.R
+    ├── 05_volcano_plot.R
+    ├── 06_go_enrichment_gprofiler.R
+    └── 07_pathway_enrichment_gprofiler.R
 
 ---
 
@@ -126,15 +127,7 @@ Typical outputs written by the scripts:
 
 ## Requirements
 
-This workflow is written in **R** and uses (among others):
-
-- `DESeq2`
-- `dplyr`, `readr`, `tibble`, `tidyr`, `stringr`
-- `ggplot2`, `ggrepel`, `patchwork`
-- `matrixStats`
-- `org.Hs.eg.db`, `AnnotationDbi`
-- `gprofiler2`
-- `ragg`, `gridExtra`, `gtable`
+This workflow is written in **R** (version 4.5.2) and optimized for running on **Windows 11** OS RStudio (version 2025.09.2 Build 418)
 
 ---
 
