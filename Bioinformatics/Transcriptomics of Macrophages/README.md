@@ -24,20 +24,21 @@ This file contains the per-sample annotations required to run the DESeq2 design 
 - `Donor`: donor identifier used for visualization (e.g., shapes in PCA plots).
 - `Sample_Name`: human-readable sample label (for plotting/figure captions).
 
-## Repo structure
+---
 
-repo/
-├── data/
-│   ├── GSE162698_raw_counts_GRCh38.p13_NCBI.tsv
-│   └── GSE162698_metadata.csv
-└── scripts/
-    ├── 01_load_data_create_dds.R
-    ├── 02_pca_analysis.R
-    ├── 03_normalized_counts_table.R
-    ├── 04_differential_expression_deseq2.R
-    ├── 05_volcano_plot.R
-    ├── 06_go_enrichment_gprofiler.R
-    └── 07_pathway_enrichment_gprofiler.R
+## Repo structre
+
+- `data/`
+  - `GSE162698_raw_counts_GRCh38.p13_NCBI.tsv`
+  - `GSE162698_metadata.csv`
+- `scripts/`
+  - `01_load_data_create_dds.R`
+  - `02_pca_analysis.R`
+  - `03_normalized_counts_table.R`
+  - `04_differential_expression_deseq2.R`
+  - `05_volcano_plot.R`
+  - `06_go_enrichment_gprofiler.R`
+  - `07_pathway_enrichment_gprofiler.R`
 
 ---
 
