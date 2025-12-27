@@ -23,11 +23,6 @@ library(org.Hs.eg.db)
 library(readr)
 
 
-# ---- Working directory ----
-setwd("C:/your/working/directory")
-getwd()
-
-
 # ---- Compute DESeq2 normalized counts ----
 # Normalized counts table
 
