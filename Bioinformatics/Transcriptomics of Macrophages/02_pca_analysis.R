@@ -31,12 +31,6 @@ library(readr)
 library(ragg)
 library(grid)
 
-
-# ---- Working directory ----
-setwd("C:/your/working/directory")
-getwd()
-
-
 # ---- VST transform ----
 # Log Transformation of counts
 vsd <- vst(dds, blind = TRUE)
