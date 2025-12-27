@@ -30,11 +30,6 @@ library(grid)
 library(readr)
 
 
-# ---- Working directory ----
-setwd("C:/your/working/directory")
-getwd()
-
-
 # ============================================================
 # Build query and background gene lists
 # ============================================================
