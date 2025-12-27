@@ -1,4 +1,4 @@
-# DESeq2 Differential Expression Analysis (GSE162698)
+# DESeq2 Differential Expression Analysis (GSE162698) (M1 vs. M0)
 
 This repository contains an end-to-end **DESeq2 RNA-seq differential expression** workflow in R using the public GEO dataset **GSE162698**. The pipeline loads the provided raw counts matrix, creates a DESeq2 object, performs QC and PCA, runs differential expression (**M1 vs M0**), generates a volcano plot, and performs GO + pathway enrichment via **g:Profiler**.
 
