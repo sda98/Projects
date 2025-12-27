@@ -134,18 +134,19 @@ This workflow is written in **R** (version 4.5.2) and optimized for running on *
 
 ## How to run
 
-1. Place the raw counts file and `GSE162698_metadata.csv` in the working directory expected by the scripts.
-2. Open R / RStudio.
-3. Run scripts in order:
+1. Download this repository
+2. Place the scripts, data, and metadata files in the working directory.
+3. Open R / RStudio.
+4. Run scripts in order:
 
 ```r
-source("scripts/01_load_data_create_dds.R")
-source("scripts/02_pca_analysis.R")
-source("scripts/03_normalized_counts_table.R")
-source("scripts/04_differential_expression_deseq2.R")
-source("scripts/05_volcano_plot.R")
-source("scripts/06_go_enrichment_gprofiler.R")
-source("scripts/07_pathway_enrichment_gprofiler.R")
+source("01_load_data_create_dds.R")
+source("02_pca_analysis.R")
+source("03_normalized_counts_table.R")
+source("04_differential_expression_deseq2.R")
+source("05_volcano_plot.R")
+source("06_go_enrichment_gprofiler.R")
+source("07_pathway_enrichment_gprofiler.R")
 
 
                                               
