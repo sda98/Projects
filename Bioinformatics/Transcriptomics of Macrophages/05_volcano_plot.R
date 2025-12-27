@@ -22,11 +22,6 @@ library(ggrepel)
 library(ragg)
 
 
-# ---- Working directory ----
-setwd("C:/your/working/directory")
-getwd()
-
-
 # ============================================================
 # Prepare volcano plot data
 # ============================================================
