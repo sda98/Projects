@@ -3,16 +3,16 @@
 # Purpose:
 #   - VST transform
 #   - PCA (PC1 vs PC2, PC3 vs PC4) with custom legend panel
-#   - Extract and annotate PC loadings + plot top loadings
+#   - Extract and annotate PC loadings + plot top loadings for 4 principal components
 #
 # Inputs (expected to already exist in environment):
-#   - dds      (DESeqDataSet)
-#   - metadata (data.frame with Donor, Polarization, etc.)
+#   - dds      (Created in 01_load_data_create_dds.R)
+#   - metadata (Created in 01_load_data_create_dds.R)
 #
 # Outputs (written to working directory):
-#   - PC1_vs_PC2.png
-#   - PC3_vs_PC4.png
-#   - PC_loadings.csv
+#   - PC1_vs_PC2.png 
+#   - PC3_vs_PC4.png 
+#   - PC_loadings.csv 
 #   - PC_loadings.png
 # ============================================================
 
@@ -74,9 +74,8 @@ don_shapes <- c(21, 22, 24)
 # PCA: PC1 vs PC2
 # ============================================================
 
-## PC1 vs PC2
 
-### Creating the main plot
+## Creating the main plot
 
 p <- ggplot(pca_data, aes(x = PC1, y = PC2)) +
   geom_point(aes(shape = Donor, fill = Polarization),
@@ -101,8 +100,7 @@ p <- ggplot(pca_data, aes(x = PC1, y = PC2)) +
   ) +
   coord_fixed(ratio = 1)
 
-
-### Creating the legend
+## Creating the legend
 
 pca_data$Polarization <- factor(pca_data$Polarization, levels = names(pol_cols))
 pca_data$Donor <- factor(pca_data$Donor)  
@@ -134,7 +132,7 @@ legend_panel <- ggplot(legend_df, aes(x = Donor, y = Polarization, shape = Donor
   axis.title.y = element_text(size = 12, color = "black", face = "bold"),
   plot.margin = margin(0, 0, 0, 0), legend.position = "none")
 
-### Final plot
+## Final plot
 
 PC1_vs_PC2 <- (p | legend_panel + plot_layout(heights = c(1, 2))) +
   plot_layout(widths = c(6, 1))
@@ -148,8 +146,8 @@ ggsave("PC1_vs_PC2.png", plot = PC1_vs_PC2,
 # PCA: PC3 vs PC4
 # ============================================================
 
-## PC3 vs PC4
 
+## Creating the main plot
 
 p <- ggplot(pca_data, aes(x = PC3, y = PC4)) +
   geom_point(aes(shape = Donor, fill = Polarization),
@@ -175,7 +173,7 @@ p <- ggplot(pca_data, aes(x = PC3, y = PC4)) +
   coord_fixed(ratio = 1)
 
 
-### Creating the legend
+## Creating the legend
 
 pca_data$Polarization <- factor(pca_data$Polarization, levels = names(pol_cols))
 pca_data$Donor <- factor(pca_data$Donor)  
@@ -207,7 +205,8 @@ legend_panel <- ggplot(legend_df, aes(x = Donor, y = Polarization, shape = Donor
         axis.title.y = element_text(size = 12, color = "black", face = "bold"),
         plot.margin = margin(0, 0, 0, 0), legend.position = "none")
 
-### Final plot
+
+## Final plot
 
 PC3_vs_PC4 <- (p | legend_panel + plot_layout(heights = c(1, 2))) +
   plot_layout(widths = c(6, 1))
@@ -221,22 +220,24 @@ ggsave("PC3_vs_PC4.png", plot = PC3_vs_PC4,
 # PC loadings: extraction + annotation + export
 # ============================================================
 
-# Extracting PC loadings:
+## Extracting PC loadings:
 
-## Loadings matrix (genes x PCs) 
+### Loadings matrix (genes x PCs) 
 
 gene_ids_raw <- rownames(pca_loadings)
 
-##  Detect ID type in rownames 
+###  Detect ID type in rownames 
+
 is_ensembl <- all(grepl("^ENSG\\d+", gene_ids_raw))
 is_numeric <- all(grepl("^\\d+$", gene_ids_raw))
 
 keytype <- if (is_ensembl) "ENSEMBL" else if (is_numeric) "ENTREZID" else "SYMBOL"
 
-## Strip Ensembl version suffix 
+### Strip Ensembl version suffix 
+  
 gene_key <- if (keytype == "ENSEMBL") sub("\\..*$", "", gene_ids_raw) else gene_ids_raw
 
-## Annotation table 
+### Annotation table 
 
 key_col <- keytype
 
@@ -248,7 +249,8 @@ anno_raw <- AnnotationDbi::select(
 ) %>%
   distinct()
 
-# Collapse 1-to-many mappings so join won't duplicate rows
+### Collapse 1-to-many mappings so join won't duplicate rows
+
 anno <- anno_raw %>%
   group_by(.data[[key_col]]) %>%
   summarise(
@@ -260,7 +262,8 @@ anno <- anno_raw %>%
   ) %>%
   rename(gene_key = !!key_col)
 
-## Build wide table for 4 PCs
+### Build wide table for 4 PCs
+
 pcs <- intersect(c("PC1","PC2","PC3","PC4"), colnames(pca_loadings))
 stopifnot(length(pcs) > 0)
 
@@ -277,7 +280,7 @@ load_wide <- as.data.frame(pca_loadings[, pcs, drop = FALSE]) %>%
   ungroup() %>%
   dplyr::select(gene_id, ENSEMBL, SYMBOL, GENENAME, SYMBOL_clean, starts_with("PC"))
 
-## Saving loadings table
+### Saving loadings table
 
 readr::write_csv(load_wide, "PC_loadings.csv")
 
