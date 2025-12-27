@@ -25,12 +25,6 @@ library(dplyr)
 library(readr)
 library(tibble)
 
-
-# ---- Working directory ----
-setwd("C:/your/working/directory")
-getwd()
-
-
 # ---- Load counts matrix ----
 data <- read_tsv("GSE162698_raw_counts_GRCh38.p13_NCBI.tsv") %>%
   mutate(GeneID = as.character(GeneID)) %>%
