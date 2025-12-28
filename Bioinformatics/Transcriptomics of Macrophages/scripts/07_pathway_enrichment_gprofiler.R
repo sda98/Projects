@@ -12,13 +12,14 @@
 #   - deseq_tbl (Annotated DESeq2 output table created in 04_differential_expression_deseq2.R)
 #
 # Output files:
-#   - gprofiler_pathways.csv
-#   - Pathways_enrichments_with_table.png
-#   - REAC_R-HSA-909733_genes_DESeq2.csv (pathway of choice)
+#   - gprofiler_pathways.csv (Pathways enrichment table, g:SCS-based Padj < 0.001)
+#   - Pathways_enrichments_with_table.png (Pathways dot plot with top-10 GO terms table panel)
+#   - REAC_R-HSA-909733_genes_DESeq2.csv (table of genes enriched in the pathway of choice, can be changed)
 # ============================================================
 
 
 # ---- Libraries ----
+
 library(dplyr)
 library(tidyr)
 library(stringr)
@@ -41,7 +42,7 @@ gp_pathway <- gost(
   query = sig_genes,
   organism = "hsapiens",
   correction_method = "g_SCS",
-  user_threshold = 0.001,
+  user_threshold = 0.001,             # Can customize the Padj cutoff for Pathways terms if needed
   sources = c("KEGG", "REAC", "WP"),
   custom_bg = bg_genes,
   evcodes = TRUE,
@@ -62,10 +63,10 @@ Pathway <- gostplot(gp_pathway, capped = FALSE, interactive = FALSE)
 
 
 # ============================================================
-# Customize GO plot styling (outlined points + highlight top 10)
+# Customize Pathways plot styling (outlined points + highlight top 10)
 # ============================================================
 
-## Find the index of the first point layer (the GO term dots) in the ggplot object to edit the point layer
+## Find the index of the first point layer (the Pathways term dots) in the ggplot object to edit the point layer
 
 pt_idx <- which(vapply(Pathway$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1)))[1]
 
@@ -109,7 +110,7 @@ Pathway <- Pathway + scale_fill_manual(values = my_pal) + guides(size = "none")
 
 base_alpha <- 0.5
 
-## Adding a rank column to GO$data for top 10, and add desired alpha values in the GO$data
+## Adding a rank column to Pathway$data for top 10, and add desired alpha values in the GO$data
 
 Pathway$data <- Pathway$data %>%
   left_join(
@@ -137,7 +138,7 @@ Pathway <- Pathway + scale_alpha_identity(guide = "none")
 
 label_df <- Pathway$data %>% dplyr::filter(!is.na(Rank))
 
-## Removing colour aesthetics from GO
+## Removing colour aesthetics from Pathway
 
 Pathway$scales$scales <- Filter(
   function(s) !any(s$aesthetics %in% c("colour", "color")),
@@ -145,7 +146,7 @@ Pathway$scales$scales <- Filter(
 )
 
 # ============================================================
-# Publication-style GO plot (rank labels + theme)
+# Publication-style Pathway plot (rank labels + theme)
 # ============================================================
 
 p_pub_pathway <- Pathway +
