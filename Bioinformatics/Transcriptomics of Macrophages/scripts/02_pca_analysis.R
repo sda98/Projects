@@ -3,17 +3,17 @@
 # Purpose:
 #   - VST transform
 #   - Create PCA plots (PC1 vs PC2, PC3 vs PC4) with custom legend panel
-#   - Extract and annotate PC loadings + plot top loadings for 4 principal components
+#   - Extract and annotate PC loadings + plot top absolute loadings for 4 principal components
 #
 # Inputs (expected to already exist in environment):
 #   - dds      (Created in 01_load_data_create_dds.R)
 #   - metadata (Created in 01_load_data_create_dds.R)
 #
 # Outputs (written to working directory):
-#   - PC1_vs_PC2.png 
-#   - PC3_vs_PC4.png 
-#   - PC_loadings.csv 
-#   - PC_loadings.png
+#   - PC1_vs_PC2.png (PC1 vs PC2 plot)
+#   - PC3_vs_PC4.png (PC3 vs PC4 plot)
+#   - PC_loadings.csv (PC loadings table)
+#   - PC_loadings.png (Top 10 PC absolute loadings per PC bar plot)
 # ============================================================
 
 
