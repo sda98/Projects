@@ -1,13 +1,10 @@
 # ============================================================
 # 05_volcano_plot.R
 # Purpose:
-#   - Build volcano plot for DESeq2 results (M1 vs M0)
-#   - Classify genes by significance + direction
-#   - Label top up/down genes
-#   - Export publication-style volcano plot
+#   - Build volcano plot for DESeq2 results (M1 vs M0) with labeled top 10 up- and top 10 downregulated genes
 #
 # Inputs (expected to already exist in environment):
-#   - deseq_tbl (data.frame with log2FoldChange, padj, SYMBOL_clean, etc.)
+#   - deseq_tbl (Annotated DESeq2 output table created in 04_differential_expression_deseq2.R)
 #
 # Output files:
 #   - volcano_plot.png
@@ -15,6 +12,7 @@
 
 
 # ---- Libraries ----
+
 library(ggplot2)
 library(dplyr)
 library(scales)
@@ -26,13 +24,14 @@ library(ragg)
 # Prepare volcano plot data
 # ============================================================
 
-# Volcano plot
+## Ensuring log2FC and Padj are numeric
 
 deseq_volcano <- as.data.frame(deseq_tbl)
 deseq_volcano$log2FoldChange <- as.numeric(deseq_tbl$log2FoldChange)
 deseq_volcano$padj <- as.numeric(deseq_volcano$padj)
 
-## 2) Differential expression labels (M1 vs M0)
+## Differential expression labels (M1 vs M0)
+
 deseq_volcano$diffexpressed <- "No significant change"
 deseq_volcano$diffexpressed[deseq_volcano$log2FoldChange >=  1 & deseq_volcano$padj <= 0.01] <- "Upregulated in M1"
 deseq_volcano$diffexpressed[deseq_volcano$log2FoldChange <= -1 & deseq_volcano$padj <= 0.01] <- "Downregulated in M1"
@@ -43,11 +42,8 @@ deseq_volcano$diffexpressed <- factor(
 )
 
 
-# ============================================================
-# Select genes to label (top up/down)
-# ============================================================
+## Pick TOP 10 up- and TOP 10 downregulated (among significant ones)
 
-## 3) Pick TOP 10 UP and TOP 10 DOWN (among significant ones)
 top_up <- deseq_volcano %>%
   filter(!is.na(padj), padj <= 0.01, log2FoldChange >= 1) %>%
   arrange(desc(log2FoldChange)) %>%
@@ -62,16 +58,13 @@ top_labels <- c(top_up$SYMBOL_clean, top_down$SYMBOL_clean)
 
 deseq_volcano$delabel <- ifelse(deseq_volcano$SYMBOL_clean %in% top_labels, deseq_volcano$SYMBOL_clean, NA)
 
-## Helps avoid weird -log10 issues for when Padj was not calculated
 deseq_volcano <- deseq_volcano %>% filter(!is.na(padj))
 
+label_df <- subset(deseq_volcano, !is.na(delabel))
 
 # ============================================================
 # Volcano plot
 # ============================================================
-
-## 4) Volcano plot (same look, just new labels + new category text)
-label_df <- subset(deseq_volcano, !is.na(delabel))
 
 volcano_plot <- ggplot(deseq_volcano, aes(x = log2FoldChange, y = -log10(padj), label = delabel)) +
   geom_point(size = 2.5, shape = 21, color = "black", fill = NA) +
