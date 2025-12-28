@@ -9,7 +9,7 @@
 #   - Export annotated DE results table
 #
 # Inputs (expected to already exist in environment):
-#   - dds (DESeqDataSet)
+#   - dds (Created in 01_load_data_create_dds.R)
 #
 # Output files:
 #   - Dispersion_plot.png
@@ -20,6 +20,7 @@
 
 
 # ---- Libraries ----
+
 library(DESeq2)
 library(dplyr)
 library(tidyr)
@@ -80,20 +81,24 @@ dev.off()
 ## Annotation
 
 ## Start from DESeq_results
+
 res_tbl <- as.data.frame(DESeq_results) %>%
   rownames_to_column("gene_id")
 
 ## Detect ID type from result rownames
+
 gene_ids_raw <- res_tbl$gene_id
 is_ensembl <- all(grepl("^ENSG\\d+", gene_ids_raw))
 is_numeric <- all(grepl("^\\d+$", gene_ids_raw))
 keytype <- if (is_ensembl) "ENSEMBL" else if (is_numeric) "ENTREZID" else "SYMBOL"
 
 ## Build gene_key (strip Ensembl version if present)
+
 gene_key <- if (keytype == "ENSEMBL") sub("\\..*$", "", gene_ids_raw) else gene_ids_raw
 key_col <- keytype
 
 ## Annotation lookup
+
 anno_raw <- AnnotationDbi::select(
   org.Hs.eg.db,
   keys    = unique(gene_key),
@@ -113,6 +118,7 @@ anno <- anno_raw %>%
   rename(gene_key = !!key_col)
 
 ## Join annotations onto DESeq results
+
 deseq_tbl <- res_tbl %>%
   mutate(gene_key = gene_key) %>%
   left_join(anno, by = "gene_key") %>%
