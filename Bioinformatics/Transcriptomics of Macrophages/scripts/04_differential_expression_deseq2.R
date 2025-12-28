@@ -46,7 +46,7 @@ dds_results <- DESeq(dds)
 # QC: dispersion model fit
 # ============================================================
 
-#Disperison model
+#Dispersion model
 
 png("Dispersion_plot.png", width = 8, height = 7, units = "in", res = 600)
 plotDispEsts(dds_results)
