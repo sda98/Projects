@@ -139,7 +139,7 @@ PC1_vs_PC2 <- (p | legend_panel + plot_layout(heights = c(1, 2))) +
   plot_layout(widths = c(6, 1))
 PC1_vs_PC2
 
-ggsave("PC1_vs_PC2.png", plot = PC1_vs_PC2,
+ggsave("results/PC1_vs_PC2.png", plot = PC1_vs_PC2,
        width = 8, height = 7, units = "in", dpi = 600, device = ragg::agg_png)
 
 
@@ -179,7 +179,7 @@ PC3_vs_PC4 <- (p_2 | legend_panel + plot_layout(heights = c(1, 2))) +
   plot_layout(widths = c(6, 1))
 PC3_vs_PC4
 
-ggsave("PC3_vs_PC4.png", plot = PC3_vs_PC4,
+ggsave("results/PC3_vs_PC4.png", plot = PC3_vs_PC4,
        width = 8, height = 7, units = "in", dpi = 600, device = ragg::agg_png)
 
 
@@ -250,7 +250,7 @@ load_wide <- as.data.frame(pca_loadings[, pcs, drop = FALSE]) %>%
 
 ### Saving loadings table
 
-readr::write_csv(load_wide, "PC_loadings.csv")
+readr::write_csv(load_wide, "results/PC_loadings.csv")
 
 
 # ============================================================
@@ -299,5 +299,5 @@ loadings_plot <- ggplot(plot_df, aes(SYMBOL, abs_loading)) +
   )
 
 
-ggsave("PC_loadings.png", plot = loadings_plot,
+ggsave("results/PC_loadings.png", plot = loadings_plot,
        width = 12, height = 10, units = "in", dpi = 600, device = ragg::agg_png)
