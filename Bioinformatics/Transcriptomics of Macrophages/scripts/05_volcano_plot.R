@@ -121,9 +121,5 @@ volcano_plot <- ggplot(deseq_volcano, aes(x = log2FoldChange, y = -log10(padj), 
                               margin = margin(b = 40, unit = "pt"))
   )
 
-ggsave("volcano_plot.png", plot = volcano_plot,
+ggsave("results/volcano_plot.png", plot = volcano_plot,
        width = 12, height = 10, units = "in", dpi = 600, device = ragg::agg_png)
-final_GO_fig
-
-ggsave("GO_enrichment_with_table.png", final_GO_fig,
-       width = 9.25, height = 10.5, units = "in", dpi = 600)
