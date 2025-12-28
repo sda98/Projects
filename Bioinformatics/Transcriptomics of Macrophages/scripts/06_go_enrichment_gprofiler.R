@@ -79,7 +79,7 @@ gp_GO <- gost(
 )
 
 head(gp_GO$result)
-readr::write_csv(gp_GO$result, "gprofiler_GO.csv")
+readr::write_csv(gp_GO$result, "results/gprofiler_GO.csv")
 
 
 # ============================================================
@@ -261,3 +261,7 @@ tab_grob <- gridExtra::tableGrob(
 final_GO_fig <- p_pub /
   tab_grob +
   plot_layout(heights = c(2.7, 1.85))
+
+final_GO_fig
+ggsave("results/GO_enrichment_with_table.png", final_GO_fig,
+       width = 9.25, height = 10.5, units = "in", dpi = 600) 
