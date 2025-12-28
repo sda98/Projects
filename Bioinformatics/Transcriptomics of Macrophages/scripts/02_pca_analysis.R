@@ -32,7 +32,8 @@ library(ragg)
 library(grid)
 
 # ---- VST transform ----
-# Log Transformation of counts
+# Variance Stabilization of counts
+
 vsd <- vst(dds, blind = TRUE)
 
 
