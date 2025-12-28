@@ -62,7 +62,7 @@ top_labels <- c(top_up$SYMBOL_clean, top_down$SYMBOL_clean)
 
 deseq_volcano$delabel <- ifelse(deseq_volcano$SYMBOL_clean %in% top_labels, deseq_volcano$SYMBOL_clean, NA)
 
-## (optional but helps avoid weird -log10 issues)
+## Helps avoid weird -log10 issues for when Padj was not calculated
 deseq_volcano <- deseq_volcano %>% filter(!is.na(padj))
 
 
@@ -105,9 +105,7 @@ volcano_plot <- ggplot(deseq_volcano, aes(x = log2FoldChange, y = -log10(padj), 
                      -18.5 - label_df$log2FoldChange),
     ylim = c(2, 100),
     segment.curvature = 0,
-    segment.angle = 90,
-    segment.ncp = 1,
-    segment.inflect = FALSE
+    segment.angle = 90
   ) +
   scale_fill_manual(
     values = c(
