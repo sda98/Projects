@@ -95,4 +95,4 @@ norm_counts_tbl <- as.data.frame(study_normalized_counts) %>%
 
 nrow(study_normalized_counts) == nrow(norm_counts_tbl)
 
-readr::write_csv(norm_counts_tbl, "normalized_counts_annotated.csv")
+readr::write_csv(norm_counts_tbl, "results/normalized_counts_annotated.csv")
