@@ -6,10 +6,10 @@
 #   - Create DESeq2 dataset object (dds)
 #
 # Outputs (created in environment):
+#   - results folder in the working directory
 #   - data     (count matrix)
 #   - metadata (metadata)
 #   - dds      (DESeqDataSet)
-#   - Results folder
 # ============================================================
 
 
@@ -24,6 +24,10 @@ library(DESeq2)
 library(dplyr)
 library(readr)
 library(tibble)
+
+# ---- Creating results folder ----
+
+dir.create("results", showWarnings = FALSE, recursive = TRUE)
 
 # ---- Load counts matrix ----
 data <- read_tsv("data/GSE162698_raw_counts_GRCh38.p13_NCBI.tsv") %>%
@@ -49,3 +53,4 @@ dds <- DESeqDataSetFromMatrix(
   colData = metadata,
   design = ~ Polarization 
 )
+
